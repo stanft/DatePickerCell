@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DatePickerCell" customModule="DatePickerCell" customModuleProvider="target">
+            <connections>
+                <outlet property="datePicker" destination="hSY-mb-JxX" id="Ul5-l3-Cjc"/>
+                <outlet property="datePickerView" destination="0MX-ZT-Ica" id="riB-hR-tym"/>
+                <outlet property="leftLabel" destination="k7G-mA-X8I" id="hDP-ZM-qs0"/>
+                <outlet property="rightLabel" destination="hJS-zi-c4S" id="3bG-Hb-zt1"/>
+                <outlet property="stackView" destination="OZN-eq-007" id="p02-La-dJs"/>
+                <outlet property="togglerLabel" destination="Lli-l7-qGD" id="1H7-tA-BTY"/>
+                <outlet property="togglerSwitch" destination="cct-wH-3YR" id="pXd-x4-r5G"/>
+                <outlet property="togglerView" destination="vl5-9A-dRN" id="cnA-1o-pMt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="390" height="325"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="OZN-eq-007">
+                    <rect key="frame" x="0.0" y="0.0" width="390" height="325"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7EV-9b-sXZ" userLabel="Cell Content">
+                            <rect key="frame" x="0.0" y="0.0" width="390" height="44"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Picker" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k7G-mA-X8I" userLabel="Left Label">
+                                    <rect key="frame" x="8" y="8" width="87.5" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Right Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJS-zi-c4S" userLabel="Right Label">
+                                    <rect key="frame" x="296" y="8" width="86" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="750" constant="44" id="44j-YC-lFe"/>
+                                <constraint firstAttribute="trailingMargin" secondItem="hJS-zi-c4S" secondAttribute="trailing" id="5da-oA-IBB"/>
+                                <constraint firstItem="k7G-mA-X8I" firstAttribute="leading" secondItem="7EV-9b-sXZ" secondAttribute="leadingMargin" id="EI7-8z-epE"/>
+                                <constraint firstItem="k7G-mA-X8I" firstAttribute="top" secondItem="7EV-9b-sXZ" secondAttribute="topMargin" id="Tue-9S-zMz"/>
+                                <constraint firstItem="hJS-zi-c4S" firstAttribute="top" secondItem="7EV-9b-sXZ" secondAttribute="topMargin" id="XMl-vF-OXl"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S2K-hz-uE5" userLabel="Separator" customClass="DVColorLockView" customModule="DatePickerCell" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="44" width="390" height="1"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="lPC-JN-nQ5"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="lockedBackgroundColor">
+                                    <color key="value" white="0.0" alpha="0.10009096746575342" colorSpace="calibratedWhite"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vl5-9A-dRN" userLabel="Toggler">
+                            <rect key="frame" x="0.0" y="45" width="390" height="47"/>
+                            <subviews>
+                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cct-wH-3YR">
+                                    <rect key="frame" x="333" y="8" width="51" height="31"/>
+                                    <connections>
+                                        <action selector="togglerSwitched:" destination="-1" eventType="valueChanged" id="sT3-de-HOC"/>
+                                    </connections>
+                                </switch>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lli-l7-qGD">
+                                    <rect key="frame" x="8" y="13.5" width="52" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="cct-wH-3YR" firstAttribute="trailing" secondItem="vl5-9A-dRN" secondAttribute="trailingMargin" id="6C3-M1-U1Y"/>
+                                <constraint firstItem="Lli-l7-qGD" firstAttribute="centerY" secondItem="cct-wH-3YR" secondAttribute="centerY" id="6I1-PP-Tf4"/>
+                                <constraint firstAttribute="bottomMargin" secondItem="cct-wH-3YR" secondAttribute="bottom" placeholder="YES" id="ARi-5N-uL0"/>
+                                <constraint firstItem="cct-wH-3YR" firstAttribute="top" secondItem="vl5-9A-dRN" secondAttribute="topMargin" id="PJO-Zi-4qZ"/>
+                                <constraint firstItem="Lli-l7-qGD" firstAttribute="leading" secondItem="vl5-9A-dRN" secondAttribute="leadingMargin" id="aF0-9B-3pr"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="47" id="jeT-nw-Ejz"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0MX-ZT-Ica" userLabel="Date Picker">
+                            <rect key="frame" x="0.0" y="92" width="390" height="233"/>
+                            <subviews>
+                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="hSY-mb-JxX">
+                                    <rect key="frame" x="0.0" y="0.0" width="390" height="233"/>
+                                    <date key="date" timeIntervalSinceReferenceDate="522059334.96144402">
+                                        <!--2017-07-18 08:28:54 +0000-->
+                                    </date>
+                                    <connections>
+                                        <action selector="datePicked:" destination="-1" eventType="valueChanged" id="PRL-Yy-z5c"/>
+                                    </connections>
+                                </datePicker>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="hSY-mb-JxX" firstAttribute="top" secondItem="0MX-ZT-Ica" secondAttribute="top" id="KHd-Wn-xfM"/>
+                                <constraint firstAttribute="bottom" secondItem="hSY-mb-JxX" secondAttribute="bottom" id="VMQ-0m-mZd"/>
+                                <constraint firstAttribute="trailing" secondItem="hSY-mb-JxX" secondAttribute="trailing" id="l8Y-zB-V4v"/>
+                                <constraint firstItem="hSY-mb-JxX" firstAttribute="leading" secondItem="0MX-ZT-Ica" secondAttribute="leading" id="vQm-Xy-XN0"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="OZN-eq-007" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="8vu-gY-hva"/>
+                <constraint firstAttribute="bottom" secondItem="OZN-eq-007" secondAttribute="bottom" id="A8a-hk-ZjY"/>
+                <constraint firstAttribute="trailing" secondItem="OZN-eq-007" secondAttribute="trailing" id="OES-Pf-GWe"/>
+                <constraint firstItem="OZN-eq-007" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="XYj-4j-m6Q"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-474" y="-388"/>
+        </view>
+    </objects>
+</document>
