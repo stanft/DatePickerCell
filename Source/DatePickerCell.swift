@@ -16,22 +16,23 @@ import UIKit
 /**
  *  Optional protocol called when date is picked
  */
+
 @objc public protocol DatePickerCellDelegate {
     @objc optional func datePickerCell(_ cell: DatePickerCell, didPickDate date: Date?)
 }
 
 open class DatePickerCell: UITableViewCell {
-    
+
     /**
     *  UIView subclass. Used as a subview in UITableViewCells. Does not change color when the UITableViewCell is selected.
     */
-    
+
     // delegate
     open var delegate: DatePickerCellDelegate?
-    
-    class DVColorLockView:UIView {
-        
-        var lockedBackgroundColor:UIColor {
+
+    class DVColorLockView: UIView {
+
+        var lockedBackgroundColor: UIColor {
             set {
                 super.backgroundColor = newValue
             }
@@ -39,8 +40,8 @@ open class DatePickerCell: UITableViewCell {
                 return super.backgroundColor!
             }
         }
-        
-        override var backgroundColor:UIColor? {
+
+        override var backgroundColor: UIColor? {
             set {
             }
             get {
@@ -48,12 +49,12 @@ open class DatePickerCell: UITableViewCell {
             }
         }
     }
-    
+
     // Only create one NSDateFormatter to save resources.
     static let dateFormatter = DateFormatter()
-    
+
     /// The selected date, set to current date/time on initialization.
-    open var date:Date = Date() {
+    open var date: Date = Date() {
         didSet {
             datePicker.date = date
             DatePickerCell.dateFormatter.dateStyle = dateStyle
@@ -86,18 +87,23 @@ open class DatePickerCell: UITableViewCell {
             rightLabel.textColor = rightLabelTextColor
         }
     }
-    
+
+    /// Label for the enable/disable switch for optional date/time setting
+    open var switchLabel = UILabel()
+
+    var toggler = UISwitch()
+
     var separator = DVColorLockView()
-    
+
     var datePickerContainer = UIView()
 
     /// The date picker embedded in the cell.
     open var datePicker: UIDatePicker = UIDatePicker()
-    
+
     /// Is the cell expanded?
     open var expanded = false
     var unexpandedHeight = CGFloat(44)
-    
+
     /**
     Creates the DatePickerCell
     
@@ -108,208 +114,256 @@ open class DatePickerCell: UITableViewCell {
     */
     override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-                
+
         setup()
     }
-    
+
     fileprivate func setup() {
         // The datePicker overhangs the view slightly to avoid invalid constraints.
         self.clipsToBounds = true
-        
-        let views = [leftLabel, rightLabel, separator, datePickerContainer, datePicker]
+
+        let views = [leftLabel, rightLabel, separator, datePickerContainer, datePicker, switchLabel, toggler]
         for view in views {
-            self.contentView .addSubview(view)
+            self.contentView.addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = false
         }
-        
+
         datePickerContainer.clipsToBounds = true
+        datePickerContainer.preservesSuperviewLayoutMargins = true
+        datePickerContainer.addSubview(switchLabel)
+        datePickerContainer.addSubview(toggler)
         datePickerContainer.addSubview(datePicker)
-        
+
         // Add a separator between the date text display, and the datePicker. Lighter grey than a normal separator.
         separator.lockedBackgroundColor = UIColor(white: 0, alpha: 0.1)
         datePickerContainer.addSubview(separator)
         datePickerContainer.addConstraints([
-            NSLayoutConstraint(
-                item: separator,
-                attribute: NSLayoutAttribute.left,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: datePickerContainer,
-                attribute: NSLayoutAttribute.left,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            NSLayoutConstraint(
-                item: separator,
-                attribute: NSLayoutAttribute.right,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: datePickerContainer,
-                attribute: NSLayoutAttribute.right,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            NSLayoutConstraint(
-                item: separator,
-                attribute: NSLayoutAttribute.height,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: nil,
-                attribute: NSLayoutAttribute.notAnAttribute,
-                multiplier: 1.0,
-                constant: 0.5
-            ),
-            NSLayoutConstraint(
-                item: separator,
-                attribute: NSLayoutAttribute.top,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: datePickerContainer,
-                attribute: NSLayoutAttribute.top,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            ])
-        
-        
+                NSLayoutConstraint(
+                        item: separator,
+                        attribute: NSLayoutAttribute.left,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: datePickerContainer,
+                        attribute: NSLayoutAttribute.left,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+                NSLayoutConstraint(
+                        item: separator,
+                        attribute: NSLayoutAttribute.right,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: datePickerContainer,
+                        attribute: NSLayoutAttribute.right,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+                NSLayoutConstraint(
+                        item: separator,
+                        attribute: NSLayoutAttribute.height,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: nil,
+                        attribute: NSLayoutAttribute.notAnAttribute,
+                        multiplier: 1.0,
+                        constant: 0.5
+                ),
+                NSLayoutConstraint(
+                        item: separator,
+                        attribute: NSLayoutAttribute.top,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: datePickerContainer,
+                        attribute: NSLayoutAttribute.top,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+        ])
+
+
         rightLabel.textColor = rightLabelTextColor
-        
+
         // Left label.
         self.contentView.addConstraints([
-            NSLayoutConstraint(
-                item: leftLabel,
-                attribute: NSLayoutAttribute.height,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: nil,
-                attribute: NSLayoutAttribute.notAnAttribute,
-                multiplier: 1.0,
-                constant: 44
-            ),
-            NSLayoutConstraint(
-                item: leftLabel,
-                attribute: NSLayoutAttribute.top,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: self.contentView,
-                attribute: NSLayoutAttribute.top,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            NSLayoutConstraint(
-                item: leftLabel,
-                attribute: NSLayoutAttribute.left,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: self.contentView,
-                attribute: NSLayoutAttribute.left,
-                multiplier: 1.0,
-                constant: self.separatorInset.left
-            ),
-            ])
-        
+                NSLayoutConstraint(
+                        item: leftLabel,
+                        attribute: NSLayoutAttribute.height,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: nil,
+                        attribute: NSLayoutAttribute.notAnAttribute,
+                        multiplier: 1.0,
+                        constant: 44
+                ),
+                NSLayoutConstraint(
+                        item: leftLabel,
+                        attribute: NSLayoutAttribute.top,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: self.contentView,
+                        attribute: NSLayoutAttribute.top,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+                NSLayoutConstraint(
+                        item: leftLabel,
+                        attribute: NSLayoutAttribute.left,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: self.contentView,
+                        attribute: NSLayoutAttribute.left,
+                        multiplier: 1.0,
+                        constant: self.separatorInset.left
+                ),
+        ])
+
         // Right label
         self.contentView.addConstraints([
-            NSLayoutConstraint(
-                item: rightLabel,
-                attribute: NSLayoutAttribute.height,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: nil,
-                attribute: NSLayoutAttribute.notAnAttribute,
-                multiplier: 1.0,
-                constant: 44
-            ),
-            NSLayoutConstraint(
-                item: rightLabel,
-                attribute: NSLayoutAttribute.top,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: self.contentView,
-                attribute: NSLayoutAttribute.top,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            NSLayoutConstraint(
-                item: rightLabel,
-                attribute: NSLayoutAttribute.right,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: self.contentView,
-                attribute: NSLayoutAttribute.right,
-                multiplier: 1.0,
-                constant: -self.separatorInset.left
-            ),
-            ])
-        
+                NSLayoutConstraint(
+                        item: rightLabel,
+                        attribute: NSLayoutAttribute.height,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: nil,
+                        attribute: NSLayoutAttribute.notAnAttribute,
+                        multiplier: 1.0,
+                        constant: 44
+                ),
+                NSLayoutConstraint(
+                        item: rightLabel,
+                        attribute: NSLayoutAttribute.top,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: self.contentView,
+                        attribute: NSLayoutAttribute.top,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+                NSLayoutConstraint(
+                        item: rightLabel,
+                        attribute: NSLayoutAttribute.right,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: self.contentView,
+                        attribute: NSLayoutAttribute.right,
+                        multiplier: 1.0,
+                        constant: -self.separatorInset.left
+                ),
+        ])
+
         // Container.
         self.contentView.addConstraints([
-            NSLayoutConstraint(
-                item: datePickerContainer,
-                attribute: NSLayoutAttribute.left,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: self.contentView,
-                attribute: NSLayoutAttribute.left,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            NSLayoutConstraint(
-                item: datePickerContainer,
-                attribute: NSLayoutAttribute.right,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: self.contentView,
-                attribute: NSLayoutAttribute.right,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            NSLayoutConstraint(
-                item: datePickerContainer,
-                attribute: NSLayoutAttribute.top,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: leftLabel,
-                attribute: NSLayoutAttribute.bottom,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            NSLayoutConstraint(
-                item: datePickerContainer,
-                attribute: NSLayoutAttribute.bottom,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: self.contentView,
-                attribute: NSLayoutAttribute.bottom,
-                multiplier: 1.0,
-                constant: 1
-            ),
-            ])
-        
+                NSLayoutConstraint(
+                        item: datePickerContainer,
+                        attribute: NSLayoutAttribute.left,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: self.contentView,
+                        attribute: NSLayoutAttribute.left,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+                NSLayoutConstraint(
+                        item: datePickerContainer,
+                        attribute: NSLayoutAttribute.right,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: self.contentView,
+                        attribute: NSLayoutAttribute.right,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+                NSLayoutConstraint(
+                        item: datePickerContainer,
+                        attribute: NSLayoutAttribute.top,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: leftLabel,
+                        attribute: NSLayoutAttribute.bottom,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+                NSLayoutConstraint(
+                        item: datePickerContainer,
+                        attribute: NSLayoutAttribute.bottom,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: self.contentView,
+                        attribute: NSLayoutAttribute.bottom,
+                        multiplier: 1.0,
+                        constant: 1
+                ),
+        ])
+
+        // Switch label constraints
+        datePickerContainer.addConstraints([
+                NSLayoutConstraint(
+                        item: switchLabel,
+                        attribute: .left,
+                        relatedBy: .equal,
+                        toItem: datePickerContainer,
+                        attribute: .leftMargin,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+                NSLayoutConstraint(
+                        item: switchLabel,
+                        attribute: .centerY,
+                        relatedBy: .equal,
+                        toItem: toggler,
+                        attribute: .centerY,
+                        multiplier: 1.0,
+                        constant: 0
+                )
+        ])
+
+        // Toggler constraints
+        datePickerContainer.addConstraints([
+                NSLayoutConstraint(
+                        item: toggler,
+                        attribute: .top,
+                        relatedBy: .equal,
+                        toItem: datePickerContainer,
+                        attribute: .topMargin,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+                NSLayoutConstraint(
+                        item: toggler,
+                        attribute: .right,
+                        relatedBy: .equal,
+                        toItem: datePickerContainer,
+                        attribute: .rightMargin,
+                        multiplier: 1.0,
+                        constant: 0
+                )
+        ])
+
         // Picker constraints.
         datePickerContainer.addConstraints([
-            NSLayoutConstraint(
-                item: datePicker,
-                attribute: NSLayoutAttribute.left,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: datePickerContainer,
-                attribute: NSLayoutAttribute.left,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            NSLayoutConstraint(
-                item: datePicker,
-                attribute: NSLayoutAttribute.right,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: datePickerContainer,
-                attribute: NSLayoutAttribute.right,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            NSLayoutConstraint(
-                item: datePicker,
-                attribute: NSLayoutAttribute.top,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: datePickerContainer,
-                attribute: NSLayoutAttribute.top,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            ])
-        
+                NSLayoutConstraint(
+                        item: datePicker,
+                        attribute: NSLayoutAttribute.left,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: datePickerContainer,
+                        attribute: NSLayoutAttribute.left,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+                NSLayoutConstraint(
+                        item: datePicker,
+                        attribute: NSLayoutAttribute.right,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: datePickerContainer,
+                        attribute: NSLayoutAttribute.right,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+                NSLayoutConstraint(
+                        item: datePicker,
+                        attribute: NSLayoutAttribute.top,
+                        relatedBy: NSLayoutRelation.equal,
+                        toItem: switchLabel,
+                        attribute: NSLayoutAttribute.bottom,
+                        multiplier: 1.0,
+                        constant: 0
+                ),
+        ])
+
         datePicker.addTarget(self, action: #selector(DatePickerCell.datePicked), for: UIControlEvents.valueChanged)
-         // Clear seconds.
+        // Clear seconds.
         let timeIntervalSinceReferenceDateWithoutSeconds = floor(date.timeIntervalSinceReferenceDate / 60.0) * 60.0
         self.date = Date(timeIntervalSinceReferenceDate: timeIntervalSinceReferenceDateWithoutSeconds)
         leftLabel.text = "Date Picker"
+        switchLabel.text = "Enable"
     }
-    
+
     /**
     Needed for initialization from a storyboard.
 
@@ -320,7 +374,7 @@ open class DatePickerCell: UITableViewCell {
         super.init(coder: aDecoder)
         setup()
     }
-    
+
     /**
     Determines the current desired height of the cell. Used in the UITableViewDelegate's heightForRowAtIndexPath method.
     
@@ -330,7 +384,7 @@ open class DatePickerCell: UITableViewCell {
         let expandedHeight = unexpandedHeight + CGFloat(datePicker.frame.size.height)
         return expanded ? expandedHeight : unexpandedHeight
     }
-    
+
     /**
     Used to notify the DatePickerCell that it was selected. The DatePickerCell will then run its selection animation and expand or collapse.
     
@@ -338,15 +392,15 @@ open class DatePickerCell: UITableViewCell {
     */
     open func selectedInTableView(_ tableView: UITableView) {
         expanded = !expanded
-        
-        UIView.transition(with: rightLabel, duration: 0.25, options:UIViewAnimationOptions.transitionCrossDissolve, animations: { () -> Void in
-                self.rightLabel.textColor = self.expanded ? self.tintColor : self.rightLabelTextColor
+
+        UIView.transition(with: rightLabel, duration: 0.25, options: UIViewAnimationOptions.transitionCrossDissolve, animations: { () -> Void in
+            self.rightLabel.textColor = self.expanded ? self.tintColor : self.rightLabelTextColor
         }, completion: nil)
-        
+
         tableView.beginUpdates()
         tableView.endUpdates()
     }
-    
+
     // Action for the datePicker ValueChanged event.
     func datePicked() {
         date = datePicker.date
