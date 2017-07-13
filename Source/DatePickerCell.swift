@@ -61,14 +61,14 @@ open class DatePickerCell: UITableViewCell {
             rightLabel.text = DatePickerCell.dateFormatter.string(from: date)
         }
     }
-    /// The timestyle.
+    /// The time style.
     open var timeStyle = DateFormatter.Style.short {
         didSet {
             DatePickerCell.dateFormatter.timeStyle = timeStyle
             rightLabel.text = DatePickerCell.dateFormatter.string(from: date)
         }
     }
-    /// The datestyle.
+    /// The date style.
     open var dateStyle = DateFormatter.Style.medium {
         didSet {
             DatePickerCell.dateFormatter.dateStyle = dateStyle
@@ -87,10 +87,11 @@ open class DatePickerCell: UITableViewCell {
         }
     }
     
-    var seperator = DVColorLockView()
+    var separator = DVColorLockView()
     
     var datePickerContainer = UIView()
-    /// The datepicker embeded in the cell.
+
+    /// The date picker embedded in the cell.
     open var datePicker: UIDatePicker = UIDatePicker()
     
     /// Is the cell expanded?
@@ -115,7 +116,7 @@ open class DatePickerCell: UITableViewCell {
         // The datePicker overhangs the view slightly to avoid invalid constraints.
         self.clipsToBounds = true
         
-        let views = [leftLabel, rightLabel, seperator, datePickerContainer, datePicker]
+        let views = [leftLabel, rightLabel, separator, datePickerContainer, datePicker]
         for view in views {
             self.contentView .addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -124,12 +125,12 @@ open class DatePickerCell: UITableViewCell {
         datePickerContainer.clipsToBounds = true
         datePickerContainer.addSubview(datePicker)
         
-        // Add a seperator between the date text display, and the datePicker. Lighter grey than a normal seperator.
-        seperator.lockedBackgroundColor = UIColor(white: 0, alpha: 0.1)
-        datePickerContainer.addSubview(seperator)
+        // Add a separator between the date text display, and the datePicker. Lighter grey than a normal separator.
+        separator.lockedBackgroundColor = UIColor(white: 0, alpha: 0.1)
+        datePickerContainer.addSubview(separator)
         datePickerContainer.addConstraints([
             NSLayoutConstraint(
-                item: seperator,
+                item: separator,
                 attribute: NSLayoutAttribute.left,
                 relatedBy: NSLayoutRelation.equal,
                 toItem: datePickerContainer,
@@ -138,7 +139,7 @@ open class DatePickerCell: UITableViewCell {
                 constant: 0
             ),
             NSLayoutConstraint(
-                item: seperator,
+                item: separator,
                 attribute: NSLayoutAttribute.right,
                 relatedBy: NSLayoutRelation.equal,
                 toItem: datePickerContainer,
@@ -147,7 +148,7 @@ open class DatePickerCell: UITableViewCell {
                 constant: 0
             ),
             NSLayoutConstraint(
-                item: seperator,
+                item: separator,
                 attribute: NSLayoutAttribute.height,
                 relatedBy: NSLayoutRelation.equal,
                 toItem: nil,
@@ -156,7 +157,7 @@ open class DatePickerCell: UITableViewCell {
                 constant: 0.5
             ),
             NSLayoutConstraint(
-                item: seperator,
+                item: separator,
                 attribute: NSLayoutAttribute.top,
                 relatedBy: NSLayoutRelation.equal,
                 toItem: datePickerContainer,
@@ -333,7 +334,7 @@ open class DatePickerCell: UITableViewCell {
     /**
     Used to notify the DatePickerCell that it was selected. The DatePickerCell will then run its selection animation and expand or collapse.
     
-    - parameter tableView: The tableview the DatePickerCell was selected in.
+    - parameter tableView: The table view the DatePickerCell was selected in.
     */
     open func selectedInTableView(_ tableView: UITableView) {
         expanded = !expanded
