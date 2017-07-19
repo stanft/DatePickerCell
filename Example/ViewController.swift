@@ -20,6 +20,9 @@ class ViewController: UITableViewController {
         // The DatePickerCell.
         let datePickerCell = DatePickerCell(style: UITableViewCellStyle.default, reuseIdentifier: nil)
         datePickerCell.delegate = self
+
+//        datePickerCell.date = Date()
+
         // Cells is a 2D array containing sections and rows.
         cells = [[datePickerCell]]
     }

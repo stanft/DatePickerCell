@@ -25,45 +25,43 @@ import UIKit
 
 open class DatePickerCell: UITableViewCell {
 
-    @IBOutlet weak var leftLabel: UILabel!
-    @IBOutlet weak var rightLabel: UILabel!
-    @IBOutlet weak var togglerLabel: UILabel!
-    @IBOutlet weak var togglerSwitch: UISwitch!
-    @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet public weak var leftLabel: UILabel!
+    @IBOutlet public weak var rightLabel: UILabel!
+    @IBOutlet public weak var togglerLabel: UILabel!
+    @IBOutlet private var togglerSwitch: UISwitch!
+    @IBOutlet private var datePicker: UIDatePicker!
 
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet open var togglerView: UIView!
-    @IBOutlet open var datePickerView: UIView!
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var togglerView: UIView!
+    @IBOutlet private weak var datePickerView: UIView!
 
     /// The cell's delegate.
-    open var delegate: DatePickerCellDelegate?
+    public var delegate: DatePickerCellDelegate?
 
     // Only create one NSDateFormatter to save resources.
     static let dateFormatter = DateFormatter()
 
     /// The selected date, set to current date/time on initialization.
-    open var date: Date = Date() {
+    public var date: Date? {
         didSet {
-            datePicker.date = date
-            DatePickerCell.dateFormatter.dateStyle = dateStyle
-            DatePickerCell.dateFormatter.timeStyle = timeStyle
-            rightLabel.text = DatePickerCell.dateFormatter.string(from: date)
+            dateActive = date != nil
+            performUIChangesForDate()
         }
     }
 
     /// The time style.
-    open var timeStyle = DateFormatter.Style.short {
+    public var timeStyle = DateFormatter.Style.short {
         didSet {
             DatePickerCell.dateFormatter.timeStyle = timeStyle
-            rightLabel.text = DatePickerCell.dateFormatter.string(from: date)
+            performUIChangesForDate()
         }
     }
 
     /// The date style.
-    open var dateStyle = DateFormatter.Style.medium {
+    public var dateStyle = DateFormatter.Style.medium {
         didSet {
             DatePickerCell.dateFormatter.dateStyle = dateStyle
-            rightLabel.text = DatePickerCell.dateFormatter.string(from: date)
+            performUIChangesForDate()
         }
     }
 
@@ -74,45 +72,33 @@ open class DatePickerCell: UITableViewCell {
         }
     }
 
-    /// Is the cell expanded?
-    open var expanded = false
+    /// Indicates whether the date picker cell is currently expanded or collapsed.
+    public var expanded = false
 
-    /// Is the date currently active?
-    open var dateActive: Bool {
+    /// Indicates whether the date value is currently active (not `nil`) or inactive (`nil`).
+    public var dateActive: Bool {
         get {
             return togglerSwitch.isOn
         }
         set {
             togglerSwitch.isOn = newValue
-            togglerSwitched(togglerSwitch)
+//            updateUIForToggler()
         }
     }
 
-    /**
-    Creates the DatePickerCell
-    
-    - parameter style:           A constant indicating a cell style. See UITableViewCellStyle for descriptions of these constants.
-    - parameter reuseIdentifier: A string used to identify the cell object if it is to be reused for drawing multiple rows of a table view. Pass nil if the cell object is not to be reused. You should use the same reuse identifier for all cells of the same form.
-    
-    - returns: An initialized DatePickerCell object or nil if the object could not be created.
-    */
+// MARK: Initializing
+
     override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
     }
 
-    /**
-     Needed for initialization from a storyboard.
-     
-     - parameter aDecoder: An unarchiver object.
-     - returns: An initialized DatePickerCell object or nil if the object could not be created.
-     */
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
 
-    fileprivate func setup() {
+    private func setup() {
         // Load content view from NIB
         let bundle = Bundle(identifier: "DV.DatePickerCell")
         let cellContentView = bundle?.loadNibNamed("DatePickerCell", owner: self, options: nil)![0] as! UIView
@@ -126,18 +112,58 @@ open class DatePickerCell: UITableViewCell {
         // Set some visualization attributes
         rightLabel.textColor = rightLabelTextColor
 
+        // Set initial view state
+        DatePickerCell.dateFormatter.dateStyle = dateStyle
+        DatePickerCell.dateFormatter.timeStyle = timeStyle
+        expanded = false
+        dateActive = false
+        performUIChangesForTogglerSwitch()
+        // Required to ensure smooth animation
+        togglerLabel.isHidden = true
+        togglerSwitch.isHidden = true
+
         // Clear seconds and set initial date
-        let timeIntervalSinceReferenceDateWithoutSeconds = floor(date.timeIntervalSinceReferenceDate / 60.0) * 60.0
-        self.date = Date(timeIntervalSinceReferenceDate: timeIntervalSinceReferenceDateWithoutSeconds)
+//        let timeIntervalSinceReferenceDateWithoutSeconds = floor(date.timeIntervalSinceReferenceDate / 60.0) * 60.0
+//        self.date = Date(timeIntervalSinceReferenceDate: timeIntervalSinceReferenceDateWithoutSeconds)
     }
 
+// MARK: Actions
+
     @IBAction func togglerSwitched(_ sender: UISwitch) {
-        updateVisibilityOfElements()
-        delegate?.tableNeedsUpdate(for: self)
+        if dateActive {
+            date = datePicker.date
+        }
+        else {
+            date = nil
+        }
+        performUIChangesForTogglerSwitch()
     }
 
     @IBAction func datePicked(_ sender: UIDatePicker) {
         print("Date picked")
+    }
+    
+// MARK: Internal functions
+    
+    private func performUIChangesForTogglerSwitch() {
+        updateVisibilityOfElements()
+        performUIChangesForDate()
+        delegate?.tableNeedsUpdate(for: self)
+    }
+    
+    private func performUIChangesForDate() {
+        if let date = date {
+            datePicker.date = date
+            rightLabel.text = DatePickerCell.dateFormatter.string(from: date)
+        }
+        else {
+            rightLabel.text = nil
+        }
+    }
+
+    private func updateVisibilityOfElements() {
+        togglerView.isHidden = !expanded
+        datePickerView.isHidden = !expanded || !dateActive
     }
 
     private func animateViewChanges() {
@@ -159,11 +185,6 @@ open class DatePickerCell: UITableViewCell {
         } else {
             performTransition()
         }
-    }
-
-    private func updateVisibilityOfElements() {
-        togglerView.isHidden = !expanded
-        datePickerView.isHidden = !expanded || !dateActive
     }
 
     /**
