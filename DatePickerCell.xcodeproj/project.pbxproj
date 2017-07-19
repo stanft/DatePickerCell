@@ -34,7 +34,7 @@
 		B327254F1B02FA4400F7F3B4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B32725531B02FA5600F7F3B4 /* DatePickerCellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerCellTests.swift; sourceTree = "<group>"; };
 		B32725541B02FA5600F7F3B4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B32725591B03019600F7F3B4 /* DatePickerCell.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = DatePickerCell.podspec; sourceTree = "<group>"; };
+		B32725591B03019600F7F3B4 /* ToggleableDatePickerCell.podspec */ = {isa = PBXFileReference; lastKnownFileType = file.podspec; path = ToggleableDatePickerCell.podspec; sourceTree = "<group>"; };
 		B327255B1B03023500F7F3B4 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B327255C1B03023500F7F3B4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B32725671B0328AF00F7F3B4 /* DatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerCell.swift; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 		B327255A1B03022300F7F3B4 /* Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				B32725591B03019600F7F3B4 /* DatePickerCell.podspec */,
+				B32725591B03019600F7F3B4 /* ToggleableDatePickerCell.podspec */,
 				B327255B1B03023500F7F3B4 /* LICENSE */,
 				B327255C1B03023500F7F3B4 /* README.md */,
 			);
