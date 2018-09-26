@@ -1,11 +1,3 @@
-//
-//  DVDatePickerTableViewCell.swift
-//  DVDatePickerTableViewCellDemo
-//
-//  Created by Dylan Vann on 2014-10-21.
-//  Copyright (c) 2014 Dylan Vann. All rights reserved.
-//
-
 import Foundation
 import UIKit
 
@@ -348,9 +340,10 @@ open class DatePickerCell: UITableViewCell {
     }
     
     // Action for the datePicker ValueChanged event.
-    func datePicked() {
+    @objc func datePicked() {
         date = datePicker.date
         // date picked, call delegate method
         self.delegate?.datePickerCell?(self, didPickDate: date)
     }
 }
+
